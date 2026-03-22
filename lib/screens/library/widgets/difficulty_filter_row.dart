@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../theme/app_theme.dart';
 import '../../../utils/constants.dart';
 
+
 class DifficultyFilterRow extends StatelessWidget {
   final String selectedDifficulty;
   final Function(String) onDifficultySelected;

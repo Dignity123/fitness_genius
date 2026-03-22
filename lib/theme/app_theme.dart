@@ -97,7 +97,7 @@ class AppTheme {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
     ),
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
       color: secondaryDark,
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
