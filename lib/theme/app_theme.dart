@@ -36,7 +36,7 @@ class AppTheme {
         color: textPrimary,
         fontSize: 22,
         fontWeight: FontWeight.bold,
-        fontFamily: 'BebasNeue',
+        fontFamily: 'OpenSans',
       ),
       iconTheme: IconThemeData(color: accentGreen),
     ),
@@ -45,13 +45,13 @@ class AppTheme {
         color: textPrimary,
         fontSize: 36,
         fontWeight: FontWeight.bold,
-        fontFamily: 'BebasNeue',
+        fontFamily: 'OpenSans',
       ),
       displayMedium: TextStyle(
         color: textPrimary,
         fontSize: 28,
         fontWeight: FontWeight.bold,
-        fontFamily: 'BebasNeue',
+        fontFamily: 'OpenSans',
       ),
       headlineSmall: TextStyle(
         color: textPrimary,
@@ -85,7 +85,7 @@ class AppTheme {
         textStyle: const TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.bold,
-          fontFamily: 'BebasNeue',
+          fontFamily: 'OpenSans',
         ),
       ),
     ),

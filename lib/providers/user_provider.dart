@@ -1,15 +1,94 @@
 import 'package:flutter/material.dart';
 import '../models/user_profile.dart';
+import '../database/user_dao.dart';
 
 class UserProvider extends ChangeNotifier {
   UserProfile? _userProfile;
   bool _isLoading = false;
+  bool _isLoggedIn = false;
+  final UserDAO _userDAO = UserDAO();
 
   UserProfile? get userProfile => _userProfile;
   bool get isLoading => _isLoading;
+  bool get isLoggedIn => _isLoggedIn;
   int get currentStreak => _userProfile?.currentStreak ?? 0;
   int get totalXP => _userProfile?.totalXP ?? 0;
   int get currentLevel => _userProfile?.currentLevel ?? 1;
+
+  // Login method
+  Future<bool> login(String email, String password) async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      // Demo login - in production, verify against backend
+      if (email == 'demo@fitnessgeniusapp.com' && password == 'demo123456') {
+        _userProfile = UserProfile(
+          id: '1',
+          name: 'Demo User',
+          email: email,
+        );
+        _isLoggedIn = true;
+        _isLoading = false;
+        notifyListeners();
+        return true;
+      }
+      
+      // Try database lookup
+      // This would be uncommented for production with proper authentication
+      // final user = await _userDAO.getUserByEmail(email);
+      // if (user != null && user.password == password) { // In production: hash verification
+      //   _userProfile = user;
+      //   _isLoggedIn = true;
+      //   _isLoading = false;
+      //   notifyListeners();
+      //   return true;
+      // }
+      
+      _isLoading = false;
+      notifyListeners();
+      return false;
+    } catch (e) {
+      _isLoading = false;
+      debugPrint('Login error: $e');
+      notifyListeners();
+      return false;
+    }
+  }
+
+  // Register method
+  Future<bool> register(String name, String email, String password) async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      final newUser = UserProfile(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        name: name,
+        email: email,
+      );
+
+      // In production: save to backend with hashed password
+      // await _userDAO.insertUser(newUser);
+      
+      _userProfile = newUser;
+      _isLoading = false;
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _isLoading = false;
+      debugPrint('Register error: $e');
+      notifyListeners();
+      return false;
+    }
+  }
+
+  // Logout method
+  void logout() {
+    _userProfile = null;
+    _isLoggedIn = false;
+    notifyListeners();
+  }
 
   Future<void> initializeUser(String name) async {
     _isLoading = true;

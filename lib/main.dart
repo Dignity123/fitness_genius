@@ -10,6 +10,7 @@ import 'providers/workout_provider.dart';
 import 'providers/progress_provider.dart';
 import 'providers/user_provider.dart';
 import 'navigation/bottom_nav.dart';
+import 'screens/auth/login_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,7 +36,15 @@ class FitnessGeniusApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Fitness Genius',
         theme: AppTheme.darkTheme,
-        home: const BottomNavBar(),
+        home: Consumer<UserProvider>(
+          builder: (context, userProvider, _) {
+            return userProvider.isLoggedIn ? const BottomNavBar() : const LoginScreen();
+          },
+        ),
+        routes: {
+          '/login': (context) => const LoginScreen(),
+          '/home': (context) => const BottomNavBar(),
+        },
         debugShowCheckedModeBanner: false,
       ),
     );
