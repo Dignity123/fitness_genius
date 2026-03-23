@@ -40,8 +40,12 @@ dependencies:
   # ═══════════════════════════════════════════════════════════════════════════
   
   # SQLite - Local relational database
-  # 9 tables: users, quests, milestones, exercises, workouts, logs, sets, progress, metrics
+  # 9 tables: quests, milestones, exercises, workouts, logs, sets, progress, metrics
   sqflite: ^2.3.0
+  
+  # SharedPreferences - Simple key-value storage
+  # Used for: User settings, preferences, quick access values
+  shared_preferences: ^2.2.0
   
   # Path utilities - Helper functions for file paths
   path: ^1.8.0
@@ -132,16 +136,7 @@ flutter:
     - assets/animations/
     - assets/icons/
     - assets/images/
-  
-  # ═══════════════════════════════════════════════════════════════════════════
-  # FONTS
-  # ═══════════════════════════════════════════════════════════════════════════
-  
-  fonts:
-    - family: OpenSans
-      fonts:
-        - asset: assets/fonts/OpenSans-VariableFont_wdth,wght.ttf
-          weight: 400
+    - assets/backgrounds/
 
 # ═════════════════════════════════════════════════════════════════════════════
 # PROJECT STRUCTURE

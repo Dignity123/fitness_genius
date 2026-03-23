@@ -1,15 +1,34 @@
 import 'package:flutter/material.dart';
 import '../models/workout_session.dart';
+import '../database/workout_dao.dart';
 
 class WorkoutProvider extends ChangeNotifier {
   WorkoutSession? _currentSession;
   List<WorkoutSession> _completedSessions = [];
   bool _isLoading = false;
+  final WorkoutDAO _workoutDAO = WorkoutDAO();
 
   WorkoutSession? get currentSession => _currentSession;
   List<WorkoutSession> get completedSessions => _completedSessions;
+  List<WorkoutSession> get allWorkouts => _completedSessions;
   bool get isLoading => _isLoading;
   bool get hasActiveWorkout => _currentSession != null && !_currentSession!.isCompleted;
+
+  Future<void> loadWorkouts() async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      // Load workouts from database
+      final workouts = await _workoutDAO.getAllWorkoutSessions();
+      _completedSessions = workouts;
+    } catch (e) {
+      debugPrint('Error loading workouts: $e');
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
 
   void startWorkout(WorkoutSession session) {
     _currentSession = session;

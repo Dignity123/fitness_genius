@@ -4,7 +4,8 @@ import '../screens/home/home_screen.dart';
 import '../screens/library/library_screen.dart';
 import '../screens/tracker/tracker_screen.dart';
 import '../screens/progress/progress_screen.dart';
-import '../screens/ai_remix/ai_remix_screen.dart';
+import '../screens/history/workout_history_screen.dart';
+import '../screens/settings/settings_screen.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({Key? key}) : super(key: key);
@@ -21,7 +22,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
     const LibraryScreen(),
     const TrackerScreen(),
     const ProgressScreen(),
-    const AIRemixScreen(),
+    const WorkoutHistoryScreen(),
+    const SettingsScreen(),
   ];
 
   void _onNavItemTapped(int index) {
@@ -59,8 +61,12 @@ class _BottomNavBarState extends State<BottomNavBar> {
             label: 'Progress',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.smart_toy),
-            label: 'AI Remix',
+            icon: Icon(Icons.history),
+            label: 'History',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
           ),
         ],
       ),

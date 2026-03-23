@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../theme/app_theme.dart';
 import '../../providers/progress_provider.dart';
-import 'widgets/week_selector.dart';
-import 'widgets/photo_comparison.dart';
-import 'widgets/metric_card.dart';
+import '../../widgets/glassmorphic_card.dart';
 
 class ProgressScreen extends StatefulWidget {
   const ProgressScreen({Key? key}) : super(key: key);
@@ -14,8 +12,6 @@ class ProgressScreen extends StatefulWidget {
 }
 
 class _ProgressScreenState extends State<ProgressScreen> {
-  DateTime _selectedWeek = DateTime.now();
-
   @override
   void initState() {
     super.initState();
@@ -28,154 +24,162 @@ class _ProgressScreenState extends State<ProgressScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('PROGRESS TRACKING'),
+        title: const Text('PROGRESS'),
+        elevation: 0,
       ),
-      body: Consumer<ProgressProvider>(
-        builder: (context, progressProvider, _) {
-          return SingleChildScrollView(
+      body: Stack(
+        children: [
+          // Background Image
+          Positioned.fill(
+            child: Image.asset(
+              'assets/images/placeholder4.jpg',
+              fit: BoxFit.cover,
+              opacity: const AlwaysStoppedAnimation(0.1),
+              errorBuilder: (context, error, stackTrace) {
+                return Container(color: AppTheme.primaryDark);
+              },
+            ),
+          ),
+          // Content
+          SingleChildScrollView(
             padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Week Selector
-                WeekSelector(
-                  selectedWeek: _selectedWeek,
-                  onWeekChanged: (newWeek) {
-                    setState(() {
-                      _selectedWeek = newWeek;
-                    });
-                  },
+                // Stats Overview
+                GlassmorphicCard(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'YOUR PROGRESS',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppTheme.textSecondary,
+                          letterSpacing: 1,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          _buildProgressStat('Weight', '75 kg', context),
+                          _buildProgressStat('Body Fat', '18%', context),
+                          _buildProgressStat('Muscle', '42 kg', context),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 24),
 
-                // Photo Comparison
+                // Progress Photos
                 Text(
-                  'PHOTO TIMELINE',
-                  style: Theme.of(context).textTheme.displayMedium,
+                  'PROGRESS PHOTOS',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: AppTheme.accentGreen,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1,
+                  ),
                 ),
                 const SizedBox(height: 12),
-                const PhotoComparison(),
+
+                GlassmorphicCard(
+                  padding: const EdgeInsets.all(16),
+                  child: Center(
+                    child: Column(
+                      children: [
+                        Icon(
+                          Icons.add_photo_alternate_outlined,
+                          size: 48,
+                          color: AppTheme.accentGreen,
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          'Add Progress Photo',
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: AppTheme.textSecondary,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        ElevatedButton.icon(
+                          onPressed: () {},
+                          icon: const Icon(Icons.camera_alt),
+                          label: const Text('TAKE PHOTO'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppTheme.accentGreen,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 24),
 
                 // Body Metrics
                 Text(
                   'BODY METRICS',
-                  style: Theme.of(context).textTheme.displayMedium,
-                ),
-                const SizedBox(height: 12),
-                GridView.count(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 12,
-                  mainAxisSpacing: 12,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: [
-                    MetricCard(
-                      label: 'WEIGHT',
-                      value: '185',
-                      unit: 'lbs',
-                      change: '-2.5',
-                      isPositive: true,
-                    ),
-                    MetricCard(
-                      label: 'CHEST',
-                      value: '40',
-                      unit: 'in',
-                      change: '+0.5',
-                      isPositive: true,
-                    ),
-                    MetricCard(
-                      label: 'WAIST',
-                      value: '32',
-                      unit: 'in',
-                      change: '-1',
-                      isPositive: true,
-                    ),
-                    MetricCard(
-                      label: 'ARMS',
-                      value: '14',
-                      unit: 'in',
-                      change: '+0.75',
-                      isPositive: true,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 24),
-
-                // Add Metrics Button
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton.icon(
-                    icon: const Icon(Icons.add),
-                    label: const Text('LOG METRICS'),
-                    onPressed: () => _showLogMetricsDialog(context),
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: AppTheme.accentGreen,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1,
                   ),
                 ),
+                const SizedBox(height: 12),
+
+                _buildMetricCard('Chest', '95 cm', context),
+                const SizedBox(height: 12),
+                _buildMetricCard('Waist', '80 cm', context),
+                const SizedBox(height: 12),
+                _buildMetricCard('Hips', '92 cm', context),
+                const SizedBox(height: 12),
+                _buildMetricCard('Arms', '32 cm', context),
               ],
             ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }
 
-  void _showLogMetricsDialog(BuildContext context) {
-    final weightController = TextEditingController();
-    final chestController = TextEditingController();
-    final waistController = TextEditingController();
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: AppTheme.secondaryDark,
-        title: const Text('LOG BODY METRICS'),
-        content: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: weightController,
-                decoration: const InputDecoration(
-                  hintText: 'Weight (lbs)',
-                  border: OutlineInputBorder(),
-                ),
-                keyboardType: TextInputType.number,
-              ),
-              const SizedBox(height: 12),
-              TextField(
-                controller: chestController,
-                decoration: const InputDecoration(
-                  hintText: 'Chest (in)',
-                  border: OutlineInputBorder(),
-                ),
-                keyboardType: TextInputType.number,
-              ),
-              const SizedBox(height: 12),
-              TextField(
-                controller: waistController,
-                decoration: const InputDecoration(
-                  hintText: 'Waist (in)',
-                  border: OutlineInputBorder(),
-                ),
-                keyboardType: TextInputType.number,
-              ),
-            ],
+  Widget _buildProgressStat(String label, String value, BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          value,
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            color: AppTheme.accentGreen,
+            fontWeight: FontWeight.bold,
           ),
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('CANCEL'),
+        const SizedBox(height: 4),
+        Text(
+          label,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            color: AppTheme.textSecondary,
           ),
-          ElevatedButton(
-            onPressed: () {
-              // TODO: Save metrics
-              Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Metrics logged!')),
-              );
-            },
-            child: const Text('LOG'),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildMetricCard(String label, String value, BuildContext context) {
+    return GlassmorphicCard(
+      padding: const EdgeInsets.all(12),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          Text(
+            value,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: AppTheme.accentGreen,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ],
       ),

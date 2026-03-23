@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../../theme/app_theme.dart';
-import '../../providers/workout_provider.dart';
-import '../../models/workout_session.dart';
-import 'widgets/set_log_table.dart';
-import 'widgets/rest_timer_widget.dart';
-import 'widgets/workout_header.dart';
+import '../../widgets/glassmorphic_card.dart';
 
 class TrackerScreen extends StatefulWidget {
   const TrackerScreen({Key? key}) : super(key: key);
@@ -20,158 +15,191 @@ class _TrackerScreenState extends State<TrackerScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('WORKOUT TRACKER'),
+        elevation: 0,
       ),
-      body: Consumer<WorkoutProvider>(
-        builder: (context, workoutProvider, _) {
-          if (!workoutProvider.hasActiveWorkout) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.fitness_center,
-                    size: 64,
-                    color: AppTheme.textSecondary.withOpacity(0.5),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'No active workout',
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  const SizedBox(height: 24),
-                  ElevatedButton(
-                    onPressed: () => _startNewWorkout(context),
-                    child: const Text('START WORKOUT'),
-                  ),
-                ],
-              ),
-            );
-          }
-
-          final session = workoutProvider.currentSession!;
-          final duration = session.getDuration();
-
-          return SingleChildScrollView(
+      body: Stack(
+        children: [
+          // Background Image
+          Positioned.fill(
+            child: Image.asset(
+              'assets/images/placeholder3.jpg',
+              fit: BoxFit.cover,
+              opacity: const AlwaysStoppedAnimation(0.1),
+              errorBuilder: (context, error, stackTrace) {
+                return Container(color: AppTheme.primaryDark);
+              },
+            ),
+          ),
+          // Content
+          SingleChildScrollView(
             padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Workout Header
-                WorkoutHeader(
-                  sessionName: session.name,
-                  duration: duration,
-                  startTime: session.startTime,
-                ),
-                const SizedBox(height: 24),
-
-                // Rest Timer
-                const RestTimerWidget(),
-                const SizedBox(height: 24),
-
-                // Exercise Logs
-                Text(
-                  'EXERCISES',
-                  style: Theme.of(context).textTheme.displayMedium,
-                ),
-                const SizedBox(height: 12),
-                if (session.exerciseLogs.isEmpty)
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Center(
-                        child: Text(
-                          'No exercises logged yet',
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                      ),
-                    ),
-                  )
-                else
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: session.exerciseLogs.length,
-                    itemBuilder: (context, index) {
-                      final exerciseLog = session.exerciseLogs[index];
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 12),
-                        child: Card(
-                          child: Padding(
-                            padding: const EdgeInsets.all(12),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  exerciseLog.exerciseName.toUpperCase(),
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineSmall
-                                      ?.copyWith(
-                                        color: AppTheme.accentGreen,
-                                      ),
-                                ),
-                                const SizedBox(height: 12),
-                                SetLogTable(exerciseLog: exerciseLog),
-                              ],
+                // Active Workout Card
+                GlassmorphicCard(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'ACTIVE WORKOUT',
+                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: AppTheme.accentGreen,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 1,
                             ),
                           ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: AppTheme.accentGreen,
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Text(
+                              'RUNNING',
+                              style: TextStyle(
+                                color: AppTheme.primaryDark,
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        '00:12:45',
+                        style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                          color: AppTheme.accentGreen,
+                          fontWeight: FontWeight.bold,
                         ),
-                      );
-                    },
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Duration',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppTheme.textSecondary,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          _buildStatItem('Calories', '145', context),
+                          _buildStatItem('Distance', '2.3 km', context),
+                          _buildStatItem('HR', '142 bpm', context),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: ElevatedButton.icon(
+                              onPressed: () {},
+                              icon: const Icon(Icons.pause),
+                              label: const Text('PAUSE'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppTheme.accentGreen,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: OutlinedButton.icon(
+                              onPressed: () {},
+                              icon: const Icon(Icons.stop),
+                              label: const Text('STOP'),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
+                ),
                 const SizedBox(height: 24),
 
-                // Action Buttons
-                Row(
+                // Quick Start Section
+                Text(
+                  'QUICK START',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: AppTheme.accentGreen,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1,
+                  ),
+                ),
+                const SizedBox(height: 12),
+
+                // Quick Workouts
+                GridView.count(
+                  crossAxisCount: 2,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 12,
+                  childAspectRatio: 1.2,
                   children: [
-                    Expanded(
-                      child: OutlinedButton.icon(
-                        icon: const Icon(Icons.close),
-                        label: const Text('CANCEL'),
-                        onPressed: () {
-                          workoutProvider.cancelWorkout();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Workout cancelled')),
-                          );
-                        },
-                        style: OutlinedButton.styleFrom(
-                          side: const BorderSide(color: AppTheme.errorRed),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: ElevatedButton.icon(
-                        icon: const Icon(Icons.check),
-                        label: const Text('FINISH'),
-                        onPressed: () {
-                          workoutProvider.completeWorkout(
-                            totalCalories: 350,
-                            totalDuration: duration,
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Workout completed! +500 XP'),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
+                    _buildQuickWorkout('Running', Icons.directions_run, context),
+                    _buildQuickWorkout('Cycling', Icons.directions_bike, context),
+                    _buildQuickWorkout('Swimming', Icons.pool, context),
+                    _buildQuickWorkout('Gym', Icons.fitness_center, context),
                   ],
                 ),
               ],
             ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }
 
-  void _startNewWorkout(BuildContext context) {
-    final session = WorkoutSession(
-      questId: 'quest_1',
-      name: 'New Workout',
+  Widget _buildStatItem(String label, String value, BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          value,
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            color: AppTheme.accentGreen,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          label,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            color: AppTheme.textSecondary,
+          ),
+        ),
+      ],
     );
-    context.read<WorkoutProvider>().startWorkout(session);
+  }
+
+  Widget _buildQuickWorkout(String name, IconData icon, BuildContext context) {
+    return GlassmorphicCard(
+      padding: const EdgeInsets.all(12),
+      child: GestureDetector(
+        onTap: () {},
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
+              color: AppTheme.accentGreen,
+              size: 32,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              name,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                fontWeight: FontWeight.w500,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

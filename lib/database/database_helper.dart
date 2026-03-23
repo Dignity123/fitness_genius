@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -20,7 +21,7 @@ class DatabaseHelper {
 
     return openDatabase(
       path,
-      version: 1,
+      version: 2,
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
     );
@@ -33,6 +34,7 @@ class DatabaseHelper {
         id TEXT PRIMARY KEY,
         name TEXT NOT NULL,
         email TEXT,
+        password TEXT,
         profileImagePath TEXT,
         totalXP INTEGER DEFAULT 0,
         currentLevel INTEGER DEFAULT 1,
@@ -179,7 +181,31 @@ class DatabaseHelper {
   }
 
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
-    // Handle migrations here
+    print('🔄 DATABASE MIGRATION: $oldVersion -> $newVersion');
+    
+    // Always try to add password column on any upgrade
+    print('📝 Checking and adding password column to user_profiles...');
+    try {
+      // Check if column already exists
+      final result = await db.rawQuery("PRAGMA table_info(user_profiles)");
+      final hasPasswordColumn = result.any((col) => col['name'] == 'password');
+      
+      if (!hasPasswordColumn) {
+        print('  Adding password column...');
+        await db.execute('ALTER TABLE user_profiles ADD COLUMN password TEXT');
+        print('✅ Password column added successfully');
+      } else {
+        print('✅ Password column already exists');
+      }
+    } catch (e) {
+      print('❌ Error adding password column: $e');
+    }
+  }
+
+  // Force database migration by incrementing version
+  Future<void> forceMigration() async {
+    _database?.close();
+    _database = null;
   }
 
   Future<void> close() async {

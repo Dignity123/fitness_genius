@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../theme/app_theme.dart';
 import '../../providers/exercise_provider.dart';
 import '../../utils/constants.dart';
+import '../../widgets/glassmorphic_card.dart';
 import 'widgets/search_bar_widget.dart';
 import 'widgets/tag_filter_row.dart';
 import 'widgets/difficulty_filter_row.dart';
@@ -29,139 +30,87 @@ class _LibraryScreenState extends State<LibraryScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('EXERCISE LIBRARY'),
+        elevation: 0,
       ),
-      body: Consumer<ExerciseProvider>(
-        builder: (context, exerciseProvider, _) {
-          return Column(
-            children: [
-              // Search Bar
-              SearchBarWidget(
-                onChanged: (value) {
-                  exerciseProvider.setSearchQuery(value);
-                },
-              ),
-
-              // Filters
-              Padding(
-                padding: const EdgeInsets.all(12),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Category Filter
-                    TagFilterRow(
-                      title: 'CATEGORY',
-                      tags: AppConstants.exerciseCategories,
-                      selectedTag: exerciseProvider.selectedCategory,
-                      onTagSelected: (tag) {
-                        exerciseProvider.setSelectedCategory(tag);
+      body: Stack(
+        children: [
+          // Background Image
+          Positioned.fill(
+            child: Image.asset(
+              'assets/images/placeholder2.jpg',
+              fit: BoxFit.cover,
+              opacity: const AlwaysStoppedAnimation(0.1),
+              errorBuilder: (context, error, stackTrace) {
+                return Container(color: AppTheme.primaryDark);
+              },
+            ),
+          ),
+          // Content
+          Consumer<ExerciseProvider>(
+            builder: (context, exerciseProvider, _) {
+              return Column(
+                children: [
+                  // Search Bar
+                  Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: SearchBarWidget(
+                      onChanged: (value) {
+                        exerciseProvider.setSearchQuery(value);
                       },
                     ),
-                    const SizedBox(height: 12),
+                  ),
 
-                    // Difficulty Filter
-                    DifficultyFilterRow(
-                      selectedDifficulty: exerciseProvider.selectedDifficulty,
-                      onDifficultySelected: (difficulty) {
-                        exerciseProvider.setSelectedDifficulty(difficulty);
-                      },
-                    ),
-                  ],
-                ),
-              ),
-
-              // Exercise List
-              Expanded(
-                child: exerciseProvider.isLoading
-                    ? const Center(
-                        child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                            AppTheme.accentGreen,
-                          ),
+                  // Filters
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Difficulty Filter
+                        DifficultyFilterRow(
+                          selectedDifficulty: 'All',
+                          onDifficultySelected: (difficulty) {
+                            exerciseProvider.setSelectedDifficulty(difficulty);
+                          },
                         ),
-                      )
-                    : exerciseProvider.filteredExercises.isEmpty
-                        ? Center(
-                            child: Text(
-                              'No exercises found',
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                          )
-                        : ListView.builder(
-                            padding: const EdgeInsets.all(12),
-                            itemCount: exerciseProvider.filteredExercises.length,
-                            itemBuilder: (context, index) {
-                              final exercise =
-                                  exerciseProvider.filteredExercises[index];
-                              return Padding(
-                                padding: const EdgeInsets.only(bottom: 12),
-                                child: ExerciseCardWidget(
-                                  exercise: exercise,
-                                  onFavoriteTap: () {
-                                    exerciseProvider.toggleFavorite(exercise.id);
-                                  },
-                                ),
-                              );
+                        const SizedBox(height: 12),
+
+                        // Tag Filter
+                        TagFilterRow(
+                          title: 'TAGS',
+                          tags: ['All', 'Cardio', 'Strength', 'Flexibility'],
+                          selectedTag: 'All',
+                          onTagSelected: (tag) {
+                            // Filter by tag
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+
+                  // Exercises List
+                  Expanded(
+                    child: ListView.builder(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      itemCount: exerciseProvider.filteredExercises.length,
+                      itemBuilder: (context, index) {
+                        final exercise = exerciseProvider.filteredExercises[index];
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 12),
+                          child: ExerciseCardWidget(
+                            exercise: exercise,
+                            onFavoriteTap: () {
+                              // Toggle favorite
                             },
                           ),
-              ),
-            ],
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: AppTheme.accentGreen,
-        foregroundColor: AppTheme.primaryDark,
-        onPressed: () => _showCreateExerciseDialog(context),
-        child: const Icon(Icons.add),
-      ),
-    );
-  }
-
-  void _showCreateExerciseDialog(BuildContext context) {
-    final nameController = TextEditingController();
-    final descriptionController = TextEditingController();
-    String selectedCategory = 'strength';
-    String selectedDifficulty = 'intermediate';
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: AppTheme.secondaryDark,
-        title: const Text('CREATE EXERCISE'),
-        content: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: nameController,
-                decoration: const InputDecoration(
-                  hintText: 'Exercise Name',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 12),
-              TextField(
-                controller: descriptionController,
-                decoration: const InputDecoration(
-                  hintText: 'Description',
-                  border: OutlineInputBorder(),
-                ),
-                maxLines: 2,
-              ),
-            ],
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('CANCEL'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              // TODO: Create exercise
-              Navigator.pop(context);
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              );
             },
-            child: const Text('CREATE'),
           ),
         ],
       ),

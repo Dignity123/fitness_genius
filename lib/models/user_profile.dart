@@ -4,6 +4,7 @@ class UserProfile {
   final String id;
   final String name;
   final String? email;
+  final String? password;
   final String? profileImagePath;
   final int totalXP;
   final int currentLevel;
@@ -18,6 +19,7 @@ class UserProfile {
     String? id,
     required this.name,
     this.email,
+    this.password,
     this.profileImagePath,
     this.totalXP = 0,
     this.currentLevel = 1,
@@ -37,6 +39,7 @@ class UserProfile {
         'id': id,
         'name': name,
         'email': email,
+        'password': password,
         'profileImagePath': profileImagePath,
         'totalXP': totalXP,
         'currentLevel': currentLevel,
@@ -51,6 +54,7 @@ class UserProfile {
         id: map['id'],
         name: map['name'],
         email: map['email'],
+        password: map['password'],
         profileImagePath: map['profileImagePath'],
         totalXP: map['totalXP'],
         currentLevel: map['currentLevel'],
@@ -73,11 +77,13 @@ class UserProfile {
     DateTime? lastWorkoutDate,
     List<String>? unlockedBadges,
     String? profileImagePath,
+    String? password,
   }) =>
       UserProfile(
         id: id,
         name: name,
         email: email,
+        password: password ?? this.password,
         profileImagePath: profileImagePath ?? this.profileImagePath,
         totalXP: totalXP ?? this.totalXP,
         currentLevel: currentLevel ?? this.currentLevel,
