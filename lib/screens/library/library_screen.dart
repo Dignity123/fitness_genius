@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../theme/app_theme.dart';
 import '../../providers/exercise_provider.dart';
+<<<<<<< HEAD
 import '../../utils/constants.dart';
+=======
+>>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
 import '../../widgets/glassmorphic_card.dart';
 import 'widgets/search_bar_widget.dart';
 import 'widgets/tag_filter_row.dart';
@@ -34,7 +37,10 @@ class _LibraryScreenState extends State<LibraryScreen> {
       ),
       body: Stack(
         children: [
+<<<<<<< HEAD
           // Background Image
+=======
+>>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
           Positioned.fill(
             child: Image.asset(
               'assets/images/placeholder2.jpg',
@@ -45,12 +51,18 @@ class _LibraryScreenState extends State<LibraryScreen> {
               },
             ),
           ),
+<<<<<<< HEAD
           // Content
+=======
+>>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
           Consumer<ExerciseProvider>(
             builder: (context, exerciseProvider, _) {
               return Column(
                 children: [
+<<<<<<< HEAD
                   // Search Bar
+=======
+>>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
                   Padding(
                     padding: const EdgeInsets.all(12),
                     child: SearchBarWidget(
@@ -59,21 +71,30 @@ class _LibraryScreenState extends State<LibraryScreen> {
                       },
                     ),
                   ),
+<<<<<<< HEAD
 
                   // Filters
+=======
+>>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+<<<<<<< HEAD
                         // Difficulty Filter
                         DifficultyFilterRow(
                           selectedDifficulty: 'All',
+=======
+                        DifficultyFilterRow(
+                          selectedDifficulty: exerciseProvider.selectedDifficulty,
+>>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
                           onDifficultySelected: (difficulty) {
                             exerciseProvider.setSelectedDifficulty(difficulty);
                           },
                         ),
                         const SizedBox(height: 12),
+<<<<<<< HEAD
 
                         // Tag Filter
                         TagFilterRow(
@@ -82,12 +103,26 @@ class _LibraryScreenState extends State<LibraryScreen> {
                           selectedTag: 'All',
                           onTagSelected: (tag) {
                             // Filter by tag
+=======
+                        TagFilterRow(
+                          title: 'CATEGORY',
+                          tags: const [
+                            'cardio',
+                            'strength',
+                            'flexibility',
+                            'balance',
+                          ],
+                          selectedTag: exerciseProvider.selectedCategory,
+                          onTagSelected: (tag) {
+                            exerciseProvider.setSelectedCategory(tag);
+>>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
                           },
                         ),
                       ],
                     ),
                   ),
                   const SizedBox(height: 12),
+<<<<<<< HEAD
 
                   // Exercises List
                   Expanded(
@@ -107,6 +142,55 @@ class _LibraryScreenState extends State<LibraryScreen> {
                         );
                       },
                     ),
+=======
+                  Expanded(
+                    child: exerciseProvider.isLoading
+                        ? const Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : exerciseProvider.filteredExercises.isEmpty
+                            ? Padding(
+                                padding: const EdgeInsets.all(12),
+                                child: GlassmorphicCard(
+                                  child: Center(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(20),
+                                      child: Text(
+                                        'No exercises found.\nTry clearing your filters or search.',
+                                        textAlign: TextAlign.center,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium
+                                            ?.copyWith(
+                                              color: AppTheme.textSecondary,
+                                            ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : ListView.builder(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 12),
+                                itemCount:
+                                    exerciseProvider.filteredExercises.length,
+                                itemBuilder: (context, index) {
+                                  final exercise =
+                                      exerciseProvider.filteredExercises[index];
+                                  return Padding(
+                                    padding:
+                                        const EdgeInsets.only(bottom: 12),
+                                    child: ExerciseCardWidget(
+                                      exercise: exercise,
+                                      onFavoriteTap: () {
+                                        exerciseProvider
+                                            .toggleFavorite(exercise.id);
+                                      },
+                                    ),
+                                  );
+                                },
+                              ),
+>>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
                   ),
                 ],
               );
