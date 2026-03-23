@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import '../models/exercise.dart';
 import '../database/exercise_dao.dart';
+<<<<<<< HEAD
 import '../utils/constants.dart';
+=======
+>>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
 
 class ExerciseProvider extends ChangeNotifier {
   final ExerciseDAO _exerciseDAO = ExerciseDAO();
@@ -29,6 +32,16 @@ class ExerciseProvider extends ChangeNotifier {
 
     try {
       _exercises = await _exerciseDAO.getAllExercises();
+<<<<<<< HEAD
+=======
+
+      if (_exercises.isEmpty) {
+        final defaults = _defaultExercises();
+        await _exerciseDAO.insertExercises(defaults);
+        _exercises = await _exerciseDAO.getAllExercises();
+      }
+
+>>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
       _applyFilters();
       _error = null;
     } catch (e) {
@@ -101,13 +114,21 @@ class ExerciseProvider extends ChangeNotifier {
   }
 
   void setSelectedCategory(String category) {
+<<<<<<< HEAD
     _selectedCategory = category;
+=======
+    _selectedCategory = category == 'All' ? '' : category;
+>>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
     _applyFilters();
     notifyListeners();
   }
 
   void setSelectedDifficulty(String difficulty) {
+<<<<<<< HEAD
     _selectedDifficulty = difficulty;
+=======
+    _selectedDifficulty = difficulty == 'All' ? '' : difficulty;
+>>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
     _applyFilters();
     notifyListeners();
   }
@@ -120,12 +141,31 @@ class ExerciseProvider extends ChangeNotifier {
 
   void _applyFilters() {
     _filteredExercises = _exercises.where((exercise) {
+<<<<<<< HEAD
       final categoryMatch = _selectedCategory.isEmpty || exercise.category == _selectedCategory;
       final difficultyMatch = _selectedDifficulty.isEmpty || exercise.difficulty == _selectedDifficulty;
       final searchMatch = _searchQuery.isEmpty ||
           exercise.name.toLowerCase().contains(_searchQuery.toLowerCase()) ||
           exercise.description.toLowerCase().contains(_searchQuery.toLowerCase()) ||
           exercise.tags.any((tag) => tag.toLowerCase().contains(_searchQuery.toLowerCase()));
+=======
+      final categoryMatch = _selectedCategory.isEmpty ||
+          exercise.category.toLowerCase() == _selectedCategory.toLowerCase() ||
+          exercise.tags.any(
+            (tag) => tag.toLowerCase() == _selectedCategory.toLowerCase(),
+          );
+
+      final difficultyMatch = _selectedDifficulty.isEmpty ||
+          exercise.difficulty.toLowerCase() ==
+              _selectedDifficulty.toLowerCase();
+
+      final searchMatch = _searchQuery.isEmpty ||
+          exercise.name.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+          exercise.description.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+          exercise.tags.any(
+            (tag) => tag.toLowerCase().contains(_searchQuery.toLowerCase()),
+          );
+>>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
 
       return categoryMatch && difficultyMatch && searchMatch;
     }).toList();
@@ -143,4 +183,72 @@ class ExerciseProvider extends ChangeNotifier {
       return null;
     }
   }
+<<<<<<< HEAD
+=======
+
+  List<Exercise> _defaultExercises() {
+    return [
+      Exercise(
+        name: 'Push Up',
+        description: 'Classic upper body exercise for chest, shoulders, and triceps.',
+        tags: ['Strength', 'Chest', 'Bodyweight'],
+        difficulty: 'beginner',
+        category: 'strength',
+        muscleGroups: ['chest', 'shoulders', 'triceps'],
+        sets: 3,
+        reps: 12,
+      ),
+      Exercise(
+        name: 'Squat',
+        description: 'Lower body exercise that targets quads, glutes, and hamstrings.',
+        tags: ['Strength', 'Legs'],
+        difficulty: 'beginner',
+        category: 'strength',
+        muscleGroups: ['quads', 'glutes', 'hamstrings'],
+        sets: 3,
+        reps: 15,
+      ),
+      Exercise(
+        name: 'Jumping Jacks',
+        description: 'Simple cardio warm-up that raises heart rate fast.',
+        tags: ['Cardio', 'Warmup'],
+        difficulty: 'beginner',
+        category: 'cardio',
+        muscleGroups: ['full body'],
+        sets: 3,
+        reps: 30,
+      ),
+      Exercise(
+        name: 'Plank',
+        description: 'Core stability movement for abs and lower back.',
+        tags: ['Core', 'Strength'],
+        difficulty: 'intermediate',
+        category: 'strength',
+        muscleGroups: ['abs', 'core', 'lower back'],
+        sets: 3,
+        reps: 1,
+      ),
+      Exercise(
+        name: 'Lunges',
+        description: 'Single-leg lower body exercise for balance and strength.',
+        tags: ['Strength', 'Legs', 'Balance'],
+        difficulty: 'intermediate',
+        category: 'balance',
+        muscleGroups: ['quads', 'glutes', 'hamstrings'],
+        sets: 3,
+        reps: 10,
+      ),
+      Exercise(
+        name: 'Hamstring Stretch',
+        description: 'Improves flexibility in the hamstrings and lower back.',
+        tags: ['Flexibility', 'Stretch'],
+        difficulty: 'beginner',
+        category: 'flexibility',
+        muscleGroups: ['hamstrings', 'lower back'],
+        sets: 2,
+        reps: 30,
+      ),
+    ];
+  }
+>>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
 }
