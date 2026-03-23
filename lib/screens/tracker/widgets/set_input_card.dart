@@ -28,7 +28,12 @@ class _SetInputCardState extends State<SetInputCard> {
   void initState() {
     super.initState();
     _repsController = TextEditingController(text: widget.set.reps.toString());
+<<<<<<< HEAD
     _weightController = TextEditingController(text: widget.set.weight.toString());
+=======
+    _weightController =
+        TextEditingController(text: widget.set.weight.toString());
+>>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
     _notesController = TextEditingController(text: widget.set.notes ?? '');
     _isCompleted = widget.set.isCompleted;
   }
@@ -184,7 +189,11 @@ class _SetInputCardState extends State<SetInputCard> {
   void _updateSet() {
     final updatedSet = widget.set.copyWith(
       reps: int.tryParse(_repsController.text) ?? 0,
+<<<<<<< HEAD
       weight: double.tryParse(_weightController.text) ?? 0,
+=======
+      weight: int.tryParse(_weightController.text) ?? 0,
+>>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
       notes: _notesController.text,
       isCompleted: _isCompleted,
     );

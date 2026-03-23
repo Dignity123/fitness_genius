@@ -24,13 +24,34 @@ class ExerciseLogScreen extends StatefulWidget {
 class _ExerciseLogScreenState extends State<ExerciseLogScreen> {
   late List<WorkoutSet> _sets;
   late ExerciseLog _currentLog;
+<<<<<<< HEAD
   final _noteController = TextEditingController();
+=======
+  late TextEditingController _noteController;
+>>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
 
   @override
   void initState() {
     super.initState();
+<<<<<<< HEAD
     _sets = List.from(widget.exerciseLog.sets);
     _currentLog = widget.exerciseLog;
+=======
+    _sets = List<WorkoutSet>.from(widget.exerciseLog.sets);
+    _currentLog = widget.exerciseLog;
+    _noteController = TextEditingController(text: widget.exerciseLog.notes ?? '');
+
+    if (_sets.isEmpty) {
+      _sets = [
+        WorkoutSet(
+          exerciseLogId: widget.exerciseLog.id,
+          setNumber: 1,
+          reps: 10,
+          weight: 0,
+        ),
+      ];
+    }
+>>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
   }
 
   @override
@@ -57,6 +78,7 @@ class _ExerciseLogScreenState extends State<ExerciseLogScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+<<<<<<< HEAD
             // Personal Record Display
             PersonalRecordDisplay(
               exerciseName: _currentLog.exerciseName,
@@ -66,6 +88,14 @@ class _ExerciseLogScreenState extends State<ExerciseLogScreen> {
             const SizedBox(height: 24),
 
             // Exercise Summary
+=======
+            PersonalRecordDisplay(
+              exerciseName: _currentLog.exerciseName,
+              maxWeight: _getMaxWeight().toDouble(),
+              maxReps: _getMaxReps(),
+            ),
+            const SizedBox(height: 24),
+>>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
             Card(
               child: Padding(
                 padding: const EdgeInsets.all(16),
@@ -84,12 +114,19 @@ class _ExerciseLogScreenState extends State<ExerciseLogScreen> {
                         const SizedBox(height: 8),
                         Text(
                           '${_getTotalReps()}',
+<<<<<<< HEAD
                           style: Theme.of(context)
                               .textTheme
                               .headlineSmall
                               ?.copyWith(
                                 color: AppTheme.accentGreen,
                               ),
+=======
+                          style:
+                              Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                    color: AppTheme.accentGreen,
+                                  ),
+>>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
                         ),
                       ],
                     ),
@@ -105,12 +142,19 @@ class _ExerciseLogScreenState extends State<ExerciseLogScreen> {
                         const SizedBox(height: 8),
                         Text(
                           '${_getTotalWeight()} lbs',
+<<<<<<< HEAD
                           style: Theme.of(context)
                               .textTheme
                               .headlineSmall
                               ?.copyWith(
                                 color: AppTheme.accentGreen,
                               ),
+=======
+                          style:
+                              Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                    color: AppTheme.accentGreen,
+                                  ),
+>>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
                         ),
                       ],
                     ),
@@ -126,12 +170,19 @@ class _ExerciseLogScreenState extends State<ExerciseLogScreen> {
                         const SizedBox(height: 8),
                         Text(
                           '${_sets.length}',
+<<<<<<< HEAD
                           style: Theme.of(context)
                               .textTheme
                               .headlineSmall
                               ?.copyWith(
                                 color: AppTheme.accentGreen,
                               ),
+=======
+                          style:
+                              Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                    color: AppTheme.accentGreen,
+                                  ),
+>>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
                         ),
                       ],
                     ),
@@ -140,8 +191,11 @@ class _ExerciseLogScreenState extends State<ExerciseLogScreen> {
               ),
             ),
             const SizedBox(height: 24),
+<<<<<<< HEAD
 
             // Sets List
+=======
+>>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
             Text(
               'SET LOGS',
               style: Theme.of(context).textTheme.displayMedium,
@@ -171,8 +225,11 @@ class _ExerciseLogScreenState extends State<ExerciseLogScreen> {
               },
             ),
             const SizedBox(height: 16),
+<<<<<<< HEAD
 
             // Add Set Button
+=======
+>>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
             SizedBox(
               width: double.infinity,
               child: OutlinedButton.icon(
@@ -182,8 +239,11 @@ class _ExerciseLogScreenState extends State<ExerciseLogScreen> {
               ),
             ),
             const SizedBox(height: 24),
+<<<<<<< HEAD
 
             // Notes Section
+=======
+>>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
             Text(
               'NOTES',
               style: Theme.of(context).textTheme.displayMedium,
@@ -210,8 +270,11 @@ class _ExerciseLogScreenState extends State<ExerciseLogScreen> {
               maxLines: 3,
             ),
             const SizedBox(height: 24),
+<<<<<<< HEAD
 
             // Action Buttons
+=======
+>>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
             Row(
               children: [
                 Expanded(
@@ -259,15 +322,24 @@ class _ExerciseLogScreenState extends State<ExerciseLogScreen> {
   }
 
   void _saveExerciseLog() {
+<<<<<<< HEAD
     // Update exercise log with current sets and notes
+=======
+>>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
     final updatedLog = _currentLog.copyWith(
       sets: _sets,
       totalReps: _getTotalReps(),
       totalWeight: _getTotalWeight(),
+<<<<<<< HEAD
       notes: _noteController.text,
     );
 
     // Save to provider
+=======
+      notes: _noteController.text.trim().isEmpty ? null : _noteController.text.trim(),
+    );
+
+>>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
     context.read<WorkoutProvider>().updateExerciseLog(updatedLog);
 
     ScaffoldMessenger.of(context).showSnackBar(
@@ -284,11 +356,19 @@ class _ExerciseLogScreenState extends State<ExerciseLogScreen> {
     return _sets.fold<int>(0, (sum, set) => sum + set.reps);
   }
 
+<<<<<<< HEAD
   double _getTotalWeight() {
     return _sets.fold<double>(0, (sum, set) => sum + (set.weight * set.reps));
   }
 
   double _getMaxWeight() {
+=======
+  int _getTotalWeight() {
+    return _sets.fold<int>(0, (sum, set) => sum + (set.weight * set.reps));
+  }
+
+  int _getMaxWeight() {
+>>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
     if (_sets.isEmpty) return 0;
     return _sets.map((s) => s.weight).reduce((a, b) => a > b ? a : b);
   }
