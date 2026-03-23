@@ -47,9 +47,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
           // Background Image
           Positioned.fill(
             child: Image.asset(
-              'assets/images/placeholder6.jpg',
+              'assets/images/placeholder6.avif',
               fit: BoxFit.cover,
-              opacity: const AlwaysStoppedAnimation(0.1),
+              opacity: const AlwaysStoppedAnimation(0.5),
               errorBuilder: (context, error, stackTrace) {
                 return Container(color: AppTheme.primaryDark);
               },

@@ -34,7 +34,7 @@ class _WorkoutHistoryScreenState extends State<WorkoutHistoryScreen> {
             child: Image.asset(
               'assets/images/placeholder5.jpg',
               fit: BoxFit.cover,
-              opacity: const AlwaysStoppedAnimation(0.1),
+              opacity: const AlwaysStoppedAnimation(0.5),
               errorBuilder: (context, error, stackTrace) {
                 return Container(color: AppTheme.primaryDark);
               },

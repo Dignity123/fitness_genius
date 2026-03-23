@@ -39,7 +39,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
             child: Image.asset(
               'assets/images/placeholder2.jpg',
               fit: BoxFit.cover,
-              opacity: const AlwaysStoppedAnimation(0.1),
+              opacity: const AlwaysStoppedAnimation(0.5),
               errorBuilder: (context, error, stackTrace) {
                 return Container(color: AppTheme.primaryDark);
               },

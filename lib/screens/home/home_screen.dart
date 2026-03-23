@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Image.asset(
               'assets/images/placeholder1.jpg',
               fit: BoxFit.cover,
-              opacity: const AlwaysStoppedAnimation(0.1),
+              opacity: const AlwaysStoppedAnimation(0.5),
               errorBuilder: (context, error, stackTrace) {
                 return Container(color: AppTheme.primaryDark);
               },
