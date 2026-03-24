@@ -11,9 +11,9 @@
 ---
 
 ## Team Members
-**Dignity Okorie**
+### Dignity Okorie
 - Roles were screens, UI, services, widgets and testing.
-**Hushen Huang**
+### Hushen Huang
 - Roles were database, models, services and providers
 
 ---
