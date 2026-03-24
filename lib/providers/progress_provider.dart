@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
 import '../models/progress_entry.dart';
 import '../utils/date_utils.dart';
-<<<<<<< HEAD
-
-class ProgressProvider extends ChangeNotifier {
-=======
 import '../database/progress_dao.dart';
 
 class ProgressProvider extends ChangeNotifier {
   final ProgressDAO _progressDAO = ProgressDAO();
 
->>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
   List<ProgressEntry> _entries = [];
   bool _isLoading = false;
   String? _error;
@@ -19,28 +14,17 @@ class ProgressProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get error => _error;
 
-<<<<<<< HEAD
-=======
   ProgressEntry? get latestEntry =>
       _entries.isNotEmpty ? _entries.first : null;
 
   BodyMetrics? get latestMetrics => latestEntry?.metrics;
 
-  /// ===============================
-  /// LOAD DATA
-  /// ===============================
->>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
   Future<void> loadProgressEntries() async {
     _isLoading = true;
     _error = null;
     notifyListeners();
 
     try {
-<<<<<<< HEAD
-      // TODO: Load from database
-      _entries = [];
-      _error = null;
-=======
       final loadedEntries = await _progressDAO.getAllProgressEntries();
       final hydratedEntries = <ProgressEntry>[];
 
@@ -51,7 +35,6 @@ class ProgressProvider extends ChangeNotifier {
 
       hydratedEntries.sort((a, b) => b.date.compareTo(a.date));
       _entries = hydratedEntries;
->>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
     } catch (e) {
       _error = e.toString();
       debugPrint('Error loading progress entries: $e');
@@ -61,43 +44,6 @@ class ProgressProvider extends ChangeNotifier {
     }
   }
 
-<<<<<<< HEAD
-  Future<void> addProgressEntry(ProgressEntry entry) async {
-    try {
-      // TODO: Save to database
-      _entries.insert(0, entry);
-      _error = null;
-      notifyListeners();
-    } catch (e) {
-      _error = e.toString();
-      notifyListeners();
-    }
-  }
-
-  Future<void> updateProgressEntry(ProgressEntry entry) async {
-    try {
-      // TODO: Update in database
-      final index = _entries.indexWhere((e) => e.id == entry.id);
-      if (index != -1) {
-        _entries[index] = entry;
-      }
-      _error = null;
-      notifyListeners();
-    } catch (e) {
-      _error = e.toString();
-      notifyListeners();
-    }
-  }
-
-  Future<void> deleteProgressEntry(String id) async {
-    try {
-      // TODO: Delete from database
-      _entries.removeWhere((e) => e.id == id);
-      _error = null;
-      notifyListeners();
-=======
-  /// ===============================
-  /// ===============================
   Future<void> saveBodyMeasurements({
     required DateTime selectedDate,
     double? weight,
@@ -201,85 +147,26 @@ class ProgressProvider extends ChangeNotifier {
     }
   }
 
-  /// ===============================
-  /// DELETE
-  /// ===============================
   Future<void> deleteProgressEntry(String id) async {
     try {
       await _progressDAO.deleteProgressEntry(id);
       await loadProgressEntries();
->>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
     } catch (e) {
       _error = e.toString();
       notifyListeners();
     }
   }
 
-<<<<<<< HEAD
   List<ProgressEntry> getEntriesByDateRange(DateTime start, DateTime end) {
-    return _entries.where((e) {
-      return e.date.isAfter(start) && e.date.isBefore(end);
-    }).toList();
-  }
-
-  ProgressEntry? getLastEntry() {
-    return _entries.isNotEmpty ? _entries.first : null;
-  }
-
-  int getDayssinceLastProgress() {
-    final lastEntry = getLastEntry();
-    if (lastEntry == null) return 0;
-    return DateTime.now().difference(lastEntry.date).inDays;
-  }
-
-  bool shouldLogProgress() {
-    final daysSince = getDayssinceLastProgress();
-    return daysSince >= 7; // Log weekly
-  }
-
-=======
-  /// ===============================
-  /// RANGE QUERY
-  /// ===============================
-  List<ProgressEntry> getEntriesByDateRange(
-      DateTime start, DateTime end) {
     return _entries.where((e) {
       return !e.date.isBefore(start) && !e.date.isAfter(end);
     }).toList();
   }
 
-  /// ===============================
-  /// WEEKLY LOGIC
-  /// ===============================
->>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
   List<ProgressEntry> getWeeklyEntries() {
     final now = DateTime.now();
     final weekStart = DateUtil.startOfWeek(now);
     final weekEnd = DateUtil.endOfWeek(now);
-<<<<<<< HEAD
-    return getEntriesByDateRange(weekStart, weekEnd);
-  }
-
-  Map<String, double> getMetricsComparison() {
-    final lastEntry = getLastEntry();
-    if (lastEntry == null || lastEntry.metrics == null) return {};
-
-    final secondLastEntry = _entries.length > 1 ? _entries[1] : null;
-    if (secondLastEntry == null || secondLastEntry.metrics == null) return {};
-
-    final last = lastEntry.metrics!;
-    final secondLast = secondLastEntry.metrics!;
-
-    return {
-      if (last.weight != null && secondLast.weight != null)
-        'weight': (last.weight! - secondLast.weight!).toStringAsFixed(1) as double,
-      if (last.chest != null && secondLast.chest != null)
-        'chest': (last.chest! - secondLast.chest!).toStringAsFixed(1) as double,
-      if (last.waist != null && secondLast.waist != null)
-        'waist': (last.waist! - secondLast.waist!).toStringAsFixed(1) as double,
-    };
-  }
-=======
 
     final weekly = getEntriesByDateRange(weekStart, weekEnd);
     weekly.sort((a, b) => a.date.compareTo(b.date));
@@ -311,9 +198,6 @@ class ProgressProvider extends ChangeNotifier {
     return weekly.last;
   }
 
-  /// ===============================
-  /// WEEKLY COMPARISON
-  /// ===============================
   Map<String, double> getWeeklyComparison() {
     final first = getWeeklyFirstEntry();
     final latest = getWeeklyLatestEntry();
@@ -331,8 +215,7 @@ class ProgressProvider extends ChangeNotifier {
     return {
       if (l.weight != null && f.weight != null)
         'weight': l.weight! - f.weight!,
-      if (l.bodyFatPercentage != null &&
-          f.bodyFatPercentage != null)
+      if (l.bodyFatPercentage != null && f.bodyFatPercentage != null)
         'bodyFat': l.bodyFatPercentage! - f.bodyFatPercentage!,
       if (l.chest != null && f.chest != null)
         'chest': l.chest! - f.chest!,
@@ -347,9 +230,6 @@ class ProgressProvider extends ChangeNotifier {
     };
   }
 
-  /// ===============================
-  /// WEEKLY SUMMARY（UI）
-  /// ===============================
   Map<String, String> getWeeklySummary() {
     final weeklyEntries = getWeeklyEntries();
     final comparison = getWeeklyComparison();
@@ -371,5 +251,4 @@ class ProgressProvider extends ChangeNotifier {
     final sign = value > 0 ? '+' : '';
     return '$sign${value.toStringAsFixed(1)} $unit';
   }
->>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
 }

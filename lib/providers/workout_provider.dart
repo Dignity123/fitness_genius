@@ -12,23 +12,13 @@ class WorkoutProvider extends ChangeNotifier {
   List<WorkoutSession> get completedSessions => _completedSessions;
   List<WorkoutSession> get allWorkouts => _completedSessions;
   bool get isLoading => _isLoading;
-<<<<<<< HEAD
   bool get hasActiveWorkout => _currentSession != null && !_currentSession!.isCompleted;
-=======
-  bool get hasActiveWorkout =>
-      _currentSession != null && !_currentSession!.isCompleted;
->>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
 
   Future<void> loadWorkouts() async {
     _isLoading = true;
     notifyListeners();
 
     try {
-<<<<<<< HEAD
-      // Load workouts from database
-      final workouts = await _workoutDAO.getAllWorkoutSessions();
-      _completedSessions = workouts;
-=======
       final workouts = await _workoutDAO.getCompletedWorkoutSessions();
       final hydratedWorkouts = <WorkoutSession>[];
 
@@ -45,7 +35,6 @@ class WorkoutProvider extends ChangeNotifier {
       }
 
       _completedSessions = hydratedWorkouts;
->>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
     } catch (e) {
       debugPrint('Error loading workouts: $e');
     } finally {
@@ -61,70 +50,35 @@ class WorkoutProvider extends ChangeNotifier {
 
   void addExerciseLog(ExerciseLog log) {
     if (_currentSession == null) return;
-<<<<<<< HEAD
     _currentSession = _currentSession!.copyWith(
       exerciseLogs: [..._currentSession!.exerciseLogs, log],
     );
-=======
-
-    final updatedLogs = [..._currentSession!.exerciseLogs, log];
-    _currentSession = _currentSession!.copyWith(exerciseLogs: updatedLogs);
->>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
     notifyListeners();
   }
 
   void updateExerciseLog(ExerciseLog log) {
     if (_currentSession == null) return;
-<<<<<<< HEAD
-    final index = _currentSession!.exerciseLogs.indexWhere((e) => e.id == log.id);
+    final updated = [..._currentSession!.exerciseLogs];
+    final index = updated.indexWhere((e) => e.id == log.id);
+
     if (index != -1) {
-      final updated = [..._currentSession!.exerciseLogs];
       updated[index] = log;
-      _currentSession = _currentSession!.copyWith(exerciseLogs: updated);
-      notifyListeners();
-    }
-  }
-
-  void completeWorkout({int? totalCalories, int? totalDuration}) {
-    if (_currentSession == null) return;
-    
-    _currentSession = _currentSession!.copyWith(
-=======
-
-    final updatedLogs = [..._currentSession!.exerciseLogs];
-    final index = updatedLogs.indexWhere((e) => e.id == log.id);
-
-    if (index != -1) {
-      updatedLogs[index] = log;
     } else {
-      updatedLogs.add(log);
+      updated.add(log);
     }
 
-    _currentSession = _currentSession!.copyWith(exerciseLogs: updatedLogs);
+    _currentSession = _currentSession!.copyWith(exerciseLogs: updated);
     notifyListeners();
   }
 
-  Future<void> completeWorkout({
-    int? totalCalories,
-    int? totalDuration,
-    String? notes,
-  }) async {
+  Future<void> completeWorkout({int? totalCalories, int? totalDuration}) async {
     if (_currentSession == null) return;
 
     final completedSession = _currentSession!.copyWith(
->>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
       isCompleted: true,
       endTime: DateTime.now(),
       totalCalories: totalCalories ?? 0,
       totalDuration: totalDuration ?? _currentSession!.getDuration(),
-<<<<<<< HEAD
-    );
-    
-    _completedSessions.add(_currentSession!);
-    _currentSession = null;
-    notifyListeners();
-=======
-      notes: notes ?? _currentSession!.notes,
     );
 
     try {
@@ -144,7 +98,6 @@ class WorkoutProvider extends ChangeNotifier {
       debugPrint('Error completing workout: $e');
       rethrow;
     }
->>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
   }
 
   void cancelWorkout() {
@@ -153,11 +106,7 @@ class WorkoutProvider extends ChangeNotifier {
   }
 
   void addWorkoutSession(WorkoutSession session) {
-<<<<<<< HEAD
-    _completedSessions.add(session);
-=======
     _completedSessions.insert(0, session);
->>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
     notifyListeners();
   }
 
@@ -173,10 +122,6 @@ class WorkoutProvider extends ChangeNotifier {
 
   int getTotalMinutesThisMonth(int month, int year) {
     return getSessionsByMonth(month, year)
-<<<<<<< HEAD
-        .fold<int>(0, (sum, session) => sum + session.getDuration());
-=======
         .fold<int>(0, (sum, session) => sum + session.totalDuration);
->>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
   }
 }

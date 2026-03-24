@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/exercise.dart';
 import '../database/exercise_dao.dart';
-<<<<<<< HEAD
-import '../utils/constants.dart';
-=======
->>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
 
 class ExerciseProvider extends ChangeNotifier {
   final ExerciseDAO _exerciseDAO = ExerciseDAO();
@@ -32,8 +28,6 @@ class ExerciseProvider extends ChangeNotifier {
 
     try {
       _exercises = await _exerciseDAO.getAllExercises();
-<<<<<<< HEAD
-=======
 
       if (_exercises.isEmpty) {
         final defaults = _defaultExercises();
@@ -41,7 +35,6 @@ class ExerciseProvider extends ChangeNotifier {
         _exercises = await _exerciseDAO.getAllExercises();
       }
 
->>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
       _applyFilters();
       _error = null;
     } catch (e) {
@@ -114,21 +107,13 @@ class ExerciseProvider extends ChangeNotifier {
   }
 
   void setSelectedCategory(String category) {
-<<<<<<< HEAD
-    _selectedCategory = category;
-=======
     _selectedCategory = category == 'All' ? '' : category;
->>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
     _applyFilters();
     notifyListeners();
   }
 
   void setSelectedDifficulty(String difficulty) {
-<<<<<<< HEAD
-    _selectedDifficulty = difficulty;
-=======
     _selectedDifficulty = difficulty == 'All' ? '' : difficulty;
->>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
     _applyFilters();
     notifyListeners();
   }
@@ -141,14 +126,6 @@ class ExerciseProvider extends ChangeNotifier {
 
   void _applyFilters() {
     _filteredExercises = _exercises.where((exercise) {
-<<<<<<< HEAD
-      final categoryMatch = _selectedCategory.isEmpty || exercise.category == _selectedCategory;
-      final difficultyMatch = _selectedDifficulty.isEmpty || exercise.difficulty == _selectedDifficulty;
-      final searchMatch = _searchQuery.isEmpty ||
-          exercise.name.toLowerCase().contains(_searchQuery.toLowerCase()) ||
-          exercise.description.toLowerCase().contains(_searchQuery.toLowerCase()) ||
-          exercise.tags.any((tag) => tag.toLowerCase().contains(_searchQuery.toLowerCase()));
-=======
       final categoryMatch = _selectedCategory.isEmpty ||
           exercise.category.toLowerCase() == _selectedCategory.toLowerCase() ||
           exercise.tags.any(
@@ -165,7 +142,6 @@ class ExerciseProvider extends ChangeNotifier {
           exercise.tags.any(
             (tag) => tag.toLowerCase().contains(_searchQuery.toLowerCase()),
           );
->>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
 
       return categoryMatch && difficultyMatch && searchMatch;
     }).toList();
@@ -183,8 +159,6 @@ class ExerciseProvider extends ChangeNotifier {
       return null;
     }
   }
-<<<<<<< HEAD
-=======
 
   List<Exercise> _defaultExercises() {
     return [
@@ -250,5 +224,4 @@ class ExerciseProvider extends ChangeNotifier {
       ),
     ];
   }
->>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
 }
