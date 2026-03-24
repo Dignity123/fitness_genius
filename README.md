@@ -411,22 +411,22 @@ flutter build ios --release
 
 ## Screenshots
 ### Home Screen
-![Home Screen](assets\screenshots\home_screen.png)
+![Home Screen](assets/screenshots/home_screen.png)
 
 ### Exercise Library
-![Exercise Library Screen](assets\screenshots\exercise_library_screen.png)
+![Exercise Library Screen](assets/screenshots/exercise_library_screen.png)
 
 ### Tracker Screen
-![Tracker Screen](assets\screenshots\tracker_screen.png)
+![Tracker Screen](assets/screenshots/tracker_screen.png)
 
 ### Progress Screen
-![Progress Screen](assets\screenshots\progress_screen.png)
+![Progress Screen](assets/screenshots/progress_screen.png)
 
 ### Workout History Screen 
-![Workout History Screen](assets\screenshots\workout_history_screen.png)
+![Workout History Screen](assets/screenshots/workout_history_screen.png)
 
 ### Settings Screen
-![Settings Screen](assets\screenshots\settings_screen.png)
+![Settings Screen](assets/screenshots/settings_screen.png)
 
 ---
 
