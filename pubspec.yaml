@@ -27,17 +27,13 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # ═══════════════════════════════════════════════════════════════════════════
+ 
   # STATE MANAGEMENT & ARCHITECTURE
-  # ═══════════════════════════════════════════════════════════════════════════
   
-  # Provider - Reactive state management with ChangeNotifier
-  # Used for: Quest, Exercise, User, Workout, Progress providers
   provider: ^6.0.0
 
-  # ═══════════════════════════════════════════════════════════════════════════
+ 
   # LOCAL DATABASE & STORAGE
-  # ═══════════════════════════════════════════════════════════════════════════
   
   # SQLite - Local relational database
   # 9 tables: quests, milestones, exercises, workouts, logs, sets, progress, metrics
@@ -50,179 +46,47 @@ dependencies:
   # Path utilities - Helper functions for file paths
   path: ^1.8.0
   
-  # Path Provider - Get app documents directory
-  # Used for: Photo storage, app data directories
   path_provider: ^2.1.0
 
-  # ═══════════════════════════════════════════════════════════════════════════
+
   # MEDIA & CAMERA
-  # ═══════════════════════════════════════════════════════════════════════════
-  
-  # Image Picker - Camera & gallery access
-  # Used for: Progress photo capture and selection
+
   image_picker: ^1.0.0
 
-  # ═══════════════════════════════════════════════════════════════════════════
+
   # ANIMATIONS
-  # ═══════════════════════════════════════════════════════════════════════════
-  
   # Lottie - JSON-based animations
-  # Used for: Loading states, success animations, transitions
+
   lottie: ^2.4.0
 
-  # ═══════════════════════════════════════════════════════════════════════════
-  # DATE & TIME HANDLING
-  # ═══════════════════════════════════════════════════════════════════════════
+
   
   # Intl - Internationalization & localization
   # Used for: Date formatting, localized strings
   intl: ^0.19.0
 
-  # ═══════════════════════════════════════════════════════════════════════════
-  # UTILITIES & HELPERS
-  # ═══════════════════════════════════════════════════════════════════════════
-  
+   
   # UUID - Unique identifier generation
   # Used for: Quest IDs, Exercise IDs, Session IDs, etc.
   uuid: ^4.0.0
 
-  # ═══════════════════════════════════════════════════════════════════════════
-  # OPTIONAL DEPENDENCIES (for future features)
-  # ═══════════════════════════════════════════════════════════════════════════
-  
-  # Uncomment for cloud features:
-  # firebase_core: ^2.24.0          # Firebase initialization
-  # firebase_database: ^10.2.0       # Real-time database
-  # cloud_firestore: ^4.13.0         # Firestore database
-  # firebase_auth: ^4.14.0           # Authentication
-  
-  # Uncomment for push notifications:
-  # firebase_messaging: ^14.7.0      # FCM push notifications
-  # flutter_local_notifications: ^15.1.0  # Local notifications
-  
-  # Uncomment for health integration:
-  # health: ^8.0.0                   # Apple HealthKit & Google Fit
-  
-  # Uncomment for analytics:
-  # firebase_analytics: ^10.8.0      # Firebase Analytics
-  # mixpanel_flutter: ^2.0.0         # Mixpanel Analytics
-  
-  # Uncomment for crash reporting:
-  # firebase_crashlytics: ^3.4.0     # Firebase Crashlytics
-  
-  # Uncomment for wearable support:
-  # wear: ^1.0.0                     # Wear OS support
+
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  # Linting & Code Quality
+  
   flutter_lints: ^3.0.0
   
-  # Testing frameworks (optional)
-  # mockito: ^5.4.0                  # Mocking library for unit tests
-  # integration_test:                # Integration testing support
-  #   sdk: flutter
+ 
 
 flutter:
   uses-material-design: true
 
-  # ═══════════════════════════════════════════════════════════════════════════
-  # ASSETS
-  # ═══════════════════════════════════════════════════════════════════════════
-  
   assets:
     - assets/animations/
     - assets/icons/
     - assets/images/
     - assets/backgrounds/
-
-# ═════════════════════════════════════════════════════════════════════════════
-# PROJECT STRUCTURE
-# ═════════════════════════════════════════════════════════════════════════════
-# 
-# lib/
-# ├── main.dart                    # App entry point
-# ├── theme/app_theme.dart         # Dark theme configuration
-# ├── models/                      # 6 data models (Quest, Exercise, etc.)
-# ├── database/                    # 6 DAOs + DatabaseHelper (SQLite)
-# ├── providers/                   # 5 state providers (Provider pattern)
-# ├── services/                    # 3 services (AI, Photo, Notification)
-# ├── screens/                     # 5 main screens + 19 widgets
-# ├── navigation/                  # Bottom navigation setup
-# └── utils/                       # Helpers, constants, validators
-#
-# assets/
-# ├── animations/                  # Lottie JSON files
-# ├── icons/                       # SVG icons
-# ├── images/                      # PNG/JPG images
-# └── fonts/                       # Custom fonts (BebasNeue)
-#
-# ═════════════════════════════════════════════════════════════════════════════
-# KEY DEPENDENCIES EXPLANATION
-# ═════════════════════════════════════════════════════════════════════════════
-#
-# PROVIDER: Manages state across the app using ChangeNotifier
-#   - QuestProvider: Quest management & statistics
-#   - ExerciseProvider: Exercise library with filtering
-#   - UserProvider: User profile & XP tracking
-#   - WorkoutProvider: Active workout session
-#   - ProgressProvider: Progress entries & metrics
-#
-# SQFLITE: Local SQLite database (offline-first)
-#   - 9 tables: users, quests, milestones, exercises, workouts, logs, sets, progress, metrics
-#   - Fully normalized schema with foreign keys
-#   - 5 performance indices
-#
-# IMAGE_PICKER: Camera & gallery integration
-#   - Capture progress photos from camera
-#   - Select photos from device gallery
-#   - Compress & store locally
-#
-# LOTTIE: Smooth JSON animations
-#   - Loading spinners
-#   - Success/completion animations
-#   - Transition effects
-#
-# INTL: Date/time formatting & internationalization
-#   - Format dates for UI display
-#   - Format times for workouts
-#   - Localize strings (future)
-#
-# UUID: Generate unique identifiers
-#   - Quest IDs
-#   - Exercise IDs
-#   - Workout session IDs
-#   - Progress entry IDs
-#
-# ═════════════════════════════════════════════════════════════════════════════
-# GETTING STARTED
-# ═════════════════════════════════════════════════════════════════════════════
-#
-# 1. Install dependencies:
-#    flutter pub get
-#
-# 2. Run the app:
-#    flutter run
-#
-# 3. Build APK:
-#    flutter build apk --release
-#
-# 4. Build iOS:
-#    flutter build ios --release
-#
-# ═════════════════════════════════════════════════════════════════════════════
-# VERSION HISTORY
-# ═════════════════════════════════════════════════════════════════════════════
-#
-# v1.0.0 (Initial Release)
-#   - 6 core features fully implemented
-#   - 55 Dart files
-#   - 9 SQLite tables
-#   - 5 complete screens
-#   - 19 custom widgets
-#   - Dark theme with acid green accents
-#   - Production-ready
-#
-# ═════════════════════════════════════════════════════════════════════════════
+    - assets/screenshots/
