@@ -1,18 +1,10 @@
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
-import 'package:provider/provider.dart';
-import 'package:image_picker/image_picker.dart';
-import '../../theme/app_theme.dart';
-import '../../providers/progress_provider.dart';
-import '../../widgets/glassmorphic_card.dart';
-=======
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import '../../theme/app_theme.dart';
 import '../../providers/progress_provider.dart';
 import '../../widgets/glassmorphic_card.dart';
 import 'widgets/weekly_progress_card.dart';
->>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
 
 class ProgressScreen extends StatefulWidget {
   const ProgressScreen({Key? key}) : super(key: key);
@@ -24,8 +16,6 @@ class ProgressScreen extends StatefulWidget {
 class _ProgressScreenState extends State<ProgressScreen> {
   final ImagePicker _imagePicker = ImagePicker();
 
-<<<<<<< HEAD
-=======
   final _weightController = TextEditingController();
   final _bodyFatController = TextEditingController();
   final _chestController = TextEditingController();
@@ -38,7 +28,6 @@ class _ProgressScreenState extends State<ProgressScreen> {
   bool _didInitialLoad = false;
   DateTime _selectedDate = DateTime.now();
 
->>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
   @override
   void initState() {
     super.initState();
@@ -47,8 +36,6 @@ class _ProgressScreenState extends State<ProgressScreen> {
     });
   }
 
-<<<<<<< HEAD
-=======
   @override
   void dispose() {
     _weightController.dispose();
@@ -103,7 +90,6 @@ class _ProgressScreenState extends State<ProgressScreen> {
     }
   }
 
->>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
   Future<void> _takePhoto() async {
     try {
       final XFile? photo = await _imagePicker.pickImage(
@@ -111,11 +97,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
         imageQuality: 85,
       );
 
-<<<<<<< HEAD
-      if (photo != null) {
-=======
       if (photo != null && mounted) {
->>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Photo captured: ${photo.name}'),
@@ -125,10 +107,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
         );
       }
     } catch (e) {
-<<<<<<< HEAD
-=======
       if (!mounted) return;
->>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Error taking photo: $e'),
@@ -138,126 +117,6 @@ class _ProgressScreenState extends State<ProgressScreen> {
     }
   }
 
-<<<<<<< HEAD
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('PROGRESS'),
-        elevation: 0,
-      ),
-      body: Stack(
-        children: [
-          // Background Image
-          Positioned.fill(
-            child: Image.asset(
-              'assets/images/placeholder4.jpg',
-              fit: BoxFit.cover,
-              opacity: const AlwaysStoppedAnimation(0.1),
-              errorBuilder: (context, error, stackTrace) {
-                return Container(color: AppTheme.primaryDark);
-              },
-            ),
-          ),
-          // Content
-          SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Stats Overview
-                GlassmorphicCard(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'YOUR PROGRESS',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppTheme.textSecondary,
-                          letterSpacing: 1,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          _buildProgressStat('Weight', '75 kg', context),
-                          _buildProgressStat('Body Fat', '18%', context),
-                          _buildProgressStat('Muscle', '42 kg', context),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 24),
-
-                // Progress Photos
-                Text(
-                  'PROGRESS PHOTOS',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppTheme.accentGreen,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1,
-                  ),
-                ),
-                const SizedBox(height: 12),
-
-                GlassmorphicCard(
-                  padding: const EdgeInsets.all(16),
-                  child: Center(
-                    child: Column(
-                      children: [
-                        Icon(
-                          Icons.add_photo_alternate_outlined,
-                          size: 48,
-                          color: AppTheme.accentGreen,
-                        ),
-                        const SizedBox(height: 12),
-                        Text(
-                          'Add Progress Photo',
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: AppTheme.textSecondary,
-                          ),
-                        ),
-                        const SizedBox(height: 12),
-                        ElevatedButton.icon(
-                          onPressed: _takePhoto,
-                          icon: const Icon(Icons.camera_alt),
-                          label: const Text('TAKE PHOTO'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppTheme.accentGreen,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 24),
-
-                // Body Metrics
-                Text(
-                  'BODY METRICS',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppTheme.accentGreen,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1,
-                  ),
-                ),
-                const SizedBox(height: 12),
-
-                _buildMetricCard('Chest', '95 cm', context),
-                const SizedBox(height: 12),
-                _buildMetricCard('Waist', '80 cm', context),
-                const SizedBox(height: 12),
-                _buildMetricCard('Hips', '92 cm', context),
-                const SizedBox(height: 12),
-                _buildMetricCard('Arms', '32 cm', context),
-              ],
-            ),
-          ),
-        ],
-      ),
-=======
   Future<void> _saveMeasurements() async {
     final provider = context.read<ProgressProvider>();
 
@@ -388,7 +247,6 @@ class _ProgressScreenState extends State<ProgressScreen> {
                       ),
                     ),
                     const SizedBox(height: 20),
-
                     WeeklyProgressCard(
                       title: 'This Week Summary',
                       values: {
@@ -400,13 +258,11 @@ class _ProgressScreenState extends State<ProgressScreen> {
                       },
                     ),
                     const SizedBox(height: 16),
-
                     WeeklyProgressCard(
                       title: 'Weekly Changes',
                       values: weeklyChanges,
                     ),
                     const SizedBox(height: 24),
-
                     Text(
                       'LAST 7 DAYS RECORDS',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -416,7 +272,6 @@ class _ProgressScreenState extends State<ProgressScreen> {
                           ),
                     ),
                     const SizedBox(height: 12),
-
                     if (last7Days.isEmpty)
                       GlassmorphicCard(
                         child: Text(
@@ -475,9 +330,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                           ),
                         );
                       }),
-
                     const SizedBox(height: 24),
-
                     Text(
                       'PROGRESS PHOTOS',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -487,7 +340,6 @@ class _ProgressScreenState extends State<ProgressScreen> {
                           ),
                     ),
                     const SizedBox(height: 12),
-
                     GlassmorphicCard(
                       padding: const EdgeInsets.all(16),
                       child: Center(
@@ -519,7 +371,6 @@ class _ProgressScreenState extends State<ProgressScreen> {
                       ),
                     ),
                     const SizedBox(height: 24),
-
                     Text(
                       'BODY METRICS',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -529,7 +380,6 @@ class _ProgressScreenState extends State<ProgressScreen> {
                           ),
                     ),
                     const SizedBox(height: 12),
-
                     GlassmorphicCard(
                       padding: const EdgeInsets.all(12),
                       child: Row(
@@ -550,7 +400,6 @@ class _ProgressScreenState extends State<ProgressScreen> {
                       ),
                     ),
                     const SizedBox(height: 12),
-
                     _buildMetricEditor(
                       label: 'Weight',
                       controller: _weightController,
@@ -558,7 +407,6 @@ class _ProgressScreenState extends State<ProgressScreen> {
                       suffixText: 'kg',
                     ),
                     const SizedBox(height: 12),
-
                     _buildMetricEditor(
                       label: 'Body Fat',
                       controller: _bodyFatController,
@@ -566,7 +414,6 @@ class _ProgressScreenState extends State<ProgressScreen> {
                       suffixText: '%',
                     ),
                     const SizedBox(height: 12),
-
                     _buildMetricEditor(
                       label: 'Chest',
                       controller: _chestController,
@@ -574,7 +421,6 @@ class _ProgressScreenState extends State<ProgressScreen> {
                       suffixText: 'cm',
                     ),
                     const SizedBox(height: 12),
-
                     _buildMetricEditor(
                       label: 'Waist',
                       controller: _waistController,
@@ -582,7 +428,6 @@ class _ProgressScreenState extends State<ProgressScreen> {
                       suffixText: 'cm',
                     ),
                     const SizedBox(height: 12),
-
                     _buildMetricEditor(
                       label: 'Hips',
                       controller: _hipsController,
@@ -590,7 +435,6 @@ class _ProgressScreenState extends State<ProgressScreen> {
                       suffixText: 'cm',
                     ),
                     const SizedBox(height: 12),
-
                     _buildMetricEditor(
                       label: 'Thighs',
                       controller: _thighsController,
@@ -598,7 +442,6 @@ class _ProgressScreenState extends State<ProgressScreen> {
                       suffixText: 'cm',
                     ),
                     const SizedBox(height: 12),
-
                     _buildMetricEditor(
                       label: 'Arms',
                       controller: _armsController,
@@ -606,7 +449,6 @@ class _ProgressScreenState extends State<ProgressScreen> {
                       suffixText: 'cm',
                     ),
                     const SizedBox(height: 12),
-
                     GlassmorphicCard(
                       padding: const EdgeInsets.all(12),
                       child: Column(
@@ -632,7 +474,6 @@ class _ProgressScreenState extends State<ProgressScreen> {
                         ],
                       ),
                     ),
-
                     const SizedBox(height: 16),
                     SizedBox(
                       width: double.infinity,
@@ -658,7 +499,6 @@ class _ProgressScreenState extends State<ProgressScreen> {
           ),
         );
       },
->>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
     );
   }
 
@@ -668,51 +508,21 @@ class _ProgressScreenState extends State<ProgressScreen> {
         Text(
           value,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-<<<<<<< HEAD
-            color: AppTheme.accentGreen,
-            fontWeight: FontWeight.bold,
-          ),
-=======
                 color: AppTheme.accentGreen,
                 fontWeight: FontWeight.bold,
               ),
->>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
         ),
         const SizedBox(height: 4),
         Text(
           label,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-<<<<<<< HEAD
-            color: AppTheme.textSecondary,
-          ),
-=======
                 color: AppTheme.textSecondary,
               ),
->>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
         ),
       ],
     );
   }
 
-<<<<<<< HEAD
-  Widget _buildMetricCard(String label, String value, BuildContext context) {
-    return GlassmorphicCard(
-      padding: const EdgeInsets.all(12),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            label,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          Text(
-            value,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: AppTheme.accentGreen,
-              fontWeight: FontWeight.bold,
-=======
   Widget _buildMiniMetric(String label, double? value, String unit) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
@@ -769,7 +579,6 @@ class _ProgressScreenState extends State<ProgressScreen> {
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
->>>>>>> 1f8dcb1 (Added some functionalities to tracker and history)
             ),
           ),
         ],
